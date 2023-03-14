@@ -10,20 +10,19 @@ app.url_map.strict_slashes = False
 
 @app.route('/verify', methods=['GET','POST'])
 def verify():
-    content = json.dumps(request.get_json(silent=True))
-    sig = content.get("sig")
-    platform = content.get("payload").get("platform")
-    pk = content.get("payload").get("pk")
-    msg = content.get("payload").get("msg")
+    content = request.get_json(silent=True)
+    sig = json.dumps(content)["sig"]
+    platform = json.dumps(content)["payload"]["platform"]
+    pk = json.dumps(content)["payload"]["pk"]
     result = False
     if (platform == 'Ethereum'):
-        if eth_account.Account.recover_message(msg,signature=sig.hex()) == pk:
+        if eth_account.Account.recover_message(content,signature=sig.hex()) == pk:
             result = True
     elif (platform == 'Algorand'):
-        if algosdk.util.verify_bytes(msg.encode('utf-8'),sig,pk):
+        if algosdk.util.verify_bytes(content.encode('utf-8'),sig,pk):
             result = True
 
-    return jsonify(content)
+    return jsonify(result)
 
 if __name__ == '__main__':
     app.run(port='5002')
