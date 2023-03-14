@@ -14,12 +14,15 @@ def verify():
     sig = content.get('sig')
     platform = content.get('payload').get('platform')
     pk = content.get('payload').get('pk')
+    msg = content.get('payload').get('msg')
+    result = False
     if (platform == 'ethereum'):
-        print('eth')
+        if eth_account.Account.recover_message(msg,signature=sig.hex()) == pk:
+            result = True
     elif (platform == 'algorand'):
-        print('alg')
-    #Check if signature is valid
-    result = True #Should only be true if signature validates
+        if algosdk.util.verify_bytes(msg.encode('utf-8'),sig,pk):
+            result = True
+
     return jsonify(result)
 
 if __name__ == '__main__':
