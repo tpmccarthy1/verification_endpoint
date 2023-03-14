@@ -23,7 +23,7 @@ def verify():
         if algosdk.util.verify_bytes(msg.encode('utf-8'),sig,pk):
             result = True
 
-    return jsonify(content)
+    return jsonify(sig)
 
 if __name__ == '__main__':
     app.run(port='5002')
