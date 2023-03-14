@@ -11,9 +11,9 @@ app.url_map.strict_slashes = False
 @app.route('/verify', methods=['GET','POST'])
 def verify():
     content = request.get_json(silent=True)
-    sig = json.dumps(content)["sig"]
-    platform = json.dumps(content)["payload"]["platform"]
-    pk = json.dumps(content)["payload"]["pk"]
+    sig = content["sig"]
+    platform = content["payload"]["platform"]
+    pk = content["payload"]["pk"]
     result = False
     if (platform == 'Ethereum'):
         if eth_account.Account.recover_message(content,signature=sig.hex()) == pk:
