@@ -15,9 +15,8 @@ def verify():
     payload = content["payload"]
     result = False
     if (payload["platform"] == 'Ethereum'):
-        print("")
-        # if eth_account.Account.recover_message(json.dumps(payload),signature=sig.hex()) == payload["pk"]:
-        #     result = True
+        if eth_account.Account.recover_message(json.dumps(payload),signature=sig) == payload["pk"]:
+            result = True
     elif (payload["platform"] == 'Algorand'):
         if algosdk.util.verify_bytes(json.dumps(payload).encode('utf-8'),sig,payload["pk"]):
             result = True
