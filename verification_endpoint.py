@@ -15,10 +15,7 @@ def verify():
     platform = content.get('payload').get('platform')
     pk = content.get('payload').get('pk')
     msg = content.get('payload').get('msg')
-    print(msg)
-    print(pk)
-    print(platform)
-    result = True
+    result = False
     if (platform == 'Ethereum'):
         if eth_account.Account.recover_message(msg,signature=sig.hex()) == pk:
             result = True
@@ -26,7 +23,7 @@ def verify():
         if algosdk.util.verify_bytes(msg.encode('utf-8'),sig,pk):
             result = True
 
-    return jsonify(result)
+    return jsonify(content)
 
 if __name__ == '__main__':
     app.run(port='5002')
