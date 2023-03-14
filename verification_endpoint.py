@@ -15,13 +15,8 @@ def verify():
     payload = content["payload"]
     result = False
     if (payload["platform"] == 'Ethereum'):
-        try:
-            if eth_account.Account.recover_message(eth_account.messages.encode_defunct(text=json.dumps(payload)),signature=sig) == payload["pk"]:
-                result = True
-        except Exception as e:
-            import traceback
-            print(traceback.format_exc())
-            print(sig)  
+        if eth_account.Account.recover_message(eth_account.messages.encode_defunct(text=json.dumps(payload)),signature=sig) == payload["pk"]:
+            result = True
     if (payload["platform"] == 'Algorand'):
         if algosdk.util.verify_bytes(json.dumps(payload).encode('utf-8'),sig,payload["pk"]):
             result = True
