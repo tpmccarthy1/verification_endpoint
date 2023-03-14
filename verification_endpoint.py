@@ -12,9 +12,15 @@ app.url_map.strict_slashes = False
 def verify():
     content = request.get_json(silent=True)
     sig = content.get('sig')
+    platform = content.get('payload').get('platform')
+    pk = content.get('payload').get('pk')
+    if (platform == 'ethereum'):
+        print('eth')
+    elif (platform == 'algorand'):
+        print('alg')
     #Check if signature is valid
     result = True #Should only be true if signature validates
-    return jsonify(content)
+    return jsonify(result)
 
 if __name__ == '__main__':
     app.run(port='5002')
