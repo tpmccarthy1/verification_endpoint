@@ -14,10 +14,10 @@ def verify():
     sig = content["sig"]
     payload = content["payload"]
     result = False
-    if (payload["platform"] == 'Ethereum'):
-        if eth_account.Account.recover_message(json.dumps(payload),signature=sig) == payload["pk"]:
-            result = True
-    elif (payload["platform"] == 'Algorand'):
+    # if (payload["platform"] == 'Ethereum'):
+    #     if eth_account.Account.recover_message(json.dumps(payload),signature=sig.hex()) == payload["pk"]:
+    #         result = True
+    if (payload["platform"] == 'Algorand'):
         if algosdk.util.verify_bytes(json.dumps(payload).encode('utf-8'),sig,payload["pk"]):
             result = True
 
