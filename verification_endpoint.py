@@ -16,7 +16,7 @@ def verify():
     result = False
     if (payload["platform"] == 'Ethereum'):
         try:
-            if eth_account.Account.recover_message(json.dumps(payload),signature=sig) == payload["pk"]:
+            if eth_account.Account.recover_message(eth_account.messages.encode_defunct(json.dumps(payload)),signature=sig) == payload["pk"]:
                 result = True
         except Exception as e:
             import traceback
