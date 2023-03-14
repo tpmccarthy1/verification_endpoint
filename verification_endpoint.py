@@ -12,14 +12,13 @@ app.url_map.strict_slashes = False
 def verify():
     content = request.get_json(silent=True)
     sig = content["sig"]
-    platform = content["payload"]["platform"]
-    pk = content["payload"]["pk"]
+    payload = json.dumps(content)["payload"]
     result = False
-    if (platform == 'Ethereum'):
-        if eth_account.Account.recover_message(content,signature=sig.hex()) == pk:
+    if (payload["platform"] == 'Ethereum'):
+        if eth_account.Account.recover_message(content,signature=sig.hex()) == payload["pk"]:
             result = True
-    elif (platform == 'Algorand'):
-        if algosdk.util.verify_bytes(content.encode('utf-8'),sig,pk):
+    elif (payload["platform"] == 'Algorand'):
+        if algosdk.util.verify_bytes(content.encode('utf-8'),sig,payload["pk"]):
             result = True
 
     return jsonify(result)
