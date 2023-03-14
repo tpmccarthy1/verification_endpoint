@@ -15,6 +15,10 @@ def verify():
     platform = content.get('payload').get('platform')
     pk = content.get('payload').get('pk')
     msg = content.get('payload').get('msg')
+    print(msg)
+    print(pk)
+    print(platform)
+    print(sig)
     result = False
     if (platform == 'ethereum'):
         if eth_account.Account.recover_message(msg,signature=sig.hex()) == pk:
