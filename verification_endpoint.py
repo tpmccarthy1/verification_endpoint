@@ -18,12 +18,11 @@ def verify():
     print(msg)
     print(pk)
     print(platform)
-    print(sig)
     result = False
-    if (platform == 'ethereum'):
+    if (platform == 'Ethereum'):
         if eth_account.Account.recover_message(msg,signature=sig.hex()) == pk:
             result = True
-    elif (platform == 'algorand'):
+    elif (platform == 'Algorand'):
         if algosdk.util.verify_bytes(msg.encode('utf-8'),sig,pk):
             result = True
 
