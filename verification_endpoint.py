@@ -3,7 +3,6 @@ from flask_restful import Api
 import json
 import eth_account
 import algosdk
-from hexbytes import HexBytes
 
 app = Flask(__name__)
 api = Api(app)
@@ -15,13 +14,18 @@ def verify():
     sig = content["sig"]
     payload = content["payload"]
     result = False
-    if (payload["platform"] == 'Ethereum'):
-        if eth_account.Account.recover_message(json.dumps(payload).encode('utf-8'),signature=HexBytes(sig)) == payload["pk"]:
-            result = True
-    if (payload["platform"] == 'Algorand'):
-        if algosdk.util.verify_bytes(json.dumps(payload).encode('utf-8'),sig,payload["pk"]):
-            result = True
-
+    try:
+        if (payload["platform"] == 'Ethereum'):
+            if eth_account.Account.recover_message(json.dumps(payload).encode('utf-8'),signature=sig.hex()) == payload["pk"]:
+                result = True
+        if (payload["platform"] == 'Algorand'):
+            if algosdk.util.verify_bytes(json.dumps(payload).encode('utf-8'),sig,payload["pk"]):
+                result = True
+    except Exception as e:
+        import traceback
+        print(traceback.format_exc())
+        print(e)  
+        
     return jsonify(result)
 
 if __name__ == '__main__':
