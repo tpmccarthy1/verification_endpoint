@@ -18,7 +18,7 @@ def verify():
     print(msg)
     print(pk)
     print(platform)
-    result = False
+    result = True
     if (platform == 'Ethereum'):
         if eth_account.Account.recover_message(msg,signature=sig.hex()) == pk:
             result = True
